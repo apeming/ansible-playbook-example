@@ -1,0 +1,19 @@
+---
+- name: copy file
+  copy:
+    src: "{{ src_file_path }}"
+    dest: "{{ file_path }}"
+
+- name: check process
+  shell: ps aux | grep 'python3 {{ script_name }}' | grep -v grep
+  register: check_process
+  ignore_errors: yes
+
+- name: start screen
+  command: chdir=/root/madara-points screen -dm -S {{ screen_name }} python3 {{ script_name }}
+  environment:
+    STARKNET_RPC: "http://127.0.0.1:9944"
+    STARKNET_KEYSTORE: "./accounts/key.json"
+    PATH: "{{ ansible_env.PATH }}:/root/.starkli/bin"
+  when: check_process.rc == 1
+

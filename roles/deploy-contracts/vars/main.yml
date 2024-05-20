@@ -1,0 +1,9 @@
+---
+src_file_path: /home/ubuntu/madara-points/deploy_contracts.py
+file_path: /root/madara-points/deploy_contracts.py
+script_name: deploy_contracts.py
+expected_md5sum: c6461421bb5083eea9502a4d3430b24b
+screen_name: deploy-contracts
+remove_path: /root/madara-points/contracts/account*
+state_file: /root/madara-points/accounts_state.json
+

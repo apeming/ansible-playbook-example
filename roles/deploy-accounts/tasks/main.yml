@@ -1,0 +1,40 @@
+---
+- name: get file stats
+  stat:
+    path: "{{ file_path }}"
+  register: file_stats
+
+- name: calculate file md5sum
+  shell: md5sum {{ file_path }} | awk '{print $1}'
+  register: file_md5sum
+  when: file_stats.stat.exists == true
+
+- name: replace file
+  copy:
+    src: "{{ src_file_path }}"
+    dest: "{{ file_path }}"
+  register: replace_file
+  when: file_md5sum.stdout != expected_md5sum
+
+- name: stop screen
+  shell: "screen -ls | grep {{ screen_name }} | awk '{print $1}' | xargs -I {} screen -S {} -X quit"
+  register: stop_screen
+  ignore_errors: yes
+
+- name: delete attach files
+  shell: rm -rf {{ remove_path }}
+  ignore_errors: yes
+
+- name: check process
+  shell: ps aux | grep 'python3 {{ script_name }}' | grep -v grep
+  register: check_process
+  ignore_errors: yes
+
+- name: start screen
+  command: chdir=/root/madara-points screen -dm -S {{ screen_name }} python3 {{ script_name }}
+  environment:
+    STARKNET_RPC: "http://127.0.0.1:9944"
+    STARKNET_KEYSTORE: "./accounts/key.json"
+    PATH: "{{ ansible_env.PATH }}:/root/.starkli/bin"
+  when: check_process.rc == 1
+

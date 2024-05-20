@@ -1,0 +1,10 @@
+- name: install madara points
+  hosts: avail-new 
+  remote_user: root
+
+  roles:
+  - init-key 
+  - deploy-faucet
+  - deploy-accounts
+  - deploy-contracts
+  - invoke-contracts

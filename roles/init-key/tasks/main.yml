@@ -1,0 +1,15 @@
+---
+- name: check key
+  stat:
+    path: /root/madara-points/accounts/key.json
+  register: file_stats
+
+- name: init key
+  expect:
+    chdir: /root/madara-points/accounts
+    command: starkli signer keystore new key.json
+    responses:
+      "Enter password:": "123qwe"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/root/.starkli/bin"
+  when: file_stats.stat.exists == false

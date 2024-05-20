@@ -1,0 +1,4 @@
+---
+- name: start faucet 
+  command: chdir=/root/madara-points bash deploy-faucet.sh 
+

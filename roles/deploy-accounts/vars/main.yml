@@ -1,0 +1,7 @@
+---
+src_file_path: /home/ubuntu/madara-points/deploy_accounts.py
+file_path: /root/madara-points/deploy_accounts.py
+script_name: deploy_accounts.py
+expected_md5sum: 39fc828e92378bbe4dfc86ad987c380c
+screen_name: deploy-accounts
+remove_path: /root/madara-points/accounts/account*

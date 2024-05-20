@@ -1,0 +1,18 @@
+---
+- hosts: avail
+  remote_user: root
+  vars:
+    file_path: /root/madara-points/deploy_contracts.py
+  tasks:
+  - name: get file stats
+    stat:
+      path: "{{ file_path }}"
+    register: file_stats
+
+  - name: calculate file md5sum
+    shell: md5sum {{ file_path }} | awk '{print $1}'
+    register: file_md5sum
+    when: file_stats.stat.exists == true
+
+  - name: print
+    debug: var=file_md5sum.stdout
